@@ -1,0 +1,7 @@
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:state_pressed="true" android:drawable="@drawable/phone_name_list_bar_click"/>
+    <item android:state_activated="true" android:drawable="@drawable/phone_name_list_bar" />
+    <item  android:drawable="@drawable/phone_name_list_bar" />
+
+</selector>
