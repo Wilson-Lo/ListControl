@@ -1,4 +1,4 @@
-package com.wilson.android.main;
+package com.wilson.android.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -10,12 +10,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wilson.android.main.R;
+
 import java.util.ArrayList;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-
+public class NonHeaderAdapter extends RecyclerView.Adapter<NonHeaderAdapter.MyViewHolder> {
     public ArrayList<String> phoneList, nameList;
-    private final String TAG = "MyAdapter";
+    private final String TAG = "NonHeaderAdapter";
     public static int selectedPosition = 0;//now position of the highlight item
     private Context mContext;
 
@@ -33,7 +34,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(Context context, ArrayList<String> phoneList, ArrayList<String> nameList) {
+    public NonHeaderAdapter(Context context, ArrayList<String> phoneList, ArrayList<String> nameList) {
         this.phoneList = phoneList;
         this.nameList = nameList;
         this.mContext = context;
@@ -41,8 +42,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                     int viewType) {
+    public NonHeaderAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                            int viewType) {
 
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_favorite, parent, false);
@@ -59,9 +60,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.textViewPhoneNumber.setText(phoneList.get(position));
         //if position equal selectedPosition means it need to highlight
         if (position != selectedPosition) {
-            holder.itemView.setBackground(ContextCompat.getDrawable(mContext, R.drawable.phone_name_list_bar));
+            holder.itemView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.phone_name_list_bar));
         } else {
-            holder.itemView.setBackground(ContextCompat.getDrawable(mContext, R.drawable.phone_name_list_bar_click));
+            holder.itemView.setBackground(ContextCompat.getDrawable(mContext,R.drawable.phone_name_list_bar_click));
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

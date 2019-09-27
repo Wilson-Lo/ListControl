@@ -1,25 +1,25 @@
 package com.wilson.android.main;
 
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
+
+import com.wilson.android.adapter.NonHeaderAdapter;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, RecyclerView.OnTouchListener {
+public class NonHeaderActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ArrayList<String> phoneList, nameList;
-    private Button bt_move_up, bt_move_down, bt_click;
-    private final String TAG = "MainActivity";
+    private Button bt_move_up, bt_move_down, bt_click, bt_header_rmode;
+    private final String TAG = "NonHeaderActivity";
     private RecyclerView recyclerView;
-    private MyAdapter mAdapter;
+    private NonHeaderAdapter mAdapter;
     private LinearLayoutManager manager;
 
     @Override
@@ -100,15 +100,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        mAdapter = new MyAdapter(this,phoneList,nameList);
+        mAdapter = new NonHeaderAdapter(this, phoneList, nameList);
         manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(mAdapter);
-        recyclerView.setOnTouchListener(this);
         this.bt_move_up = (Button) findViewById(R.id.button_move_up);
         this.bt_move_up.setOnClickListener(this);
         this.bt_move_down = (Button) findViewById(R.id.button_move_down);
         this.bt_move_down.setOnClickListener(this);
+        this.bt_header_rmode = (Button) findViewById(R.id.button_header);
+        this.bt_header_rmode.setOnClickListener(this);
         this.bt_click = (Button) findViewById(R.id.button_click);
         this.bt_click.setOnClickListener(this);
     }
@@ -126,41 +127,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(TAG, "onItemClick");
-    }
-
-    @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
 
             case R.id.button_move_up:
                 Log.d(TAG, "button_move_up");
-                if ((MyAdapter.selectedPosition - 1) >= 0)
-                    MyAdapter.selectedPosition = MyAdapter.selectedPosition - 1;
-
+                if ((NonHeaderAdapter.selectedPosition - 1) >= 0)
+                    NonHeaderAdapter.selectedPosition = NonHeaderAdapter.selectedPosition - 1;
+                recyclerView.scrollToPosition(NonHeaderAdapter.selectedPosition);
+                mAdapter.notifyDataSetChanged();
+                Log.d(TAG, "now position = " + NonHeaderAdapter.selectedPosition);
                 break;
             case R.id.button_move_down:
                 Log.d(TAG, "button_move_down");
-                if ((MyAdapter.selectedPosition + 1) <= phoneList.size()-1)
-                    MyAdapter.selectedPosition = MyAdapter.selectedPosition + 1;
+                if ((NonHeaderAdapter.selectedPosition + 1) <= phoneList.size() - 1)
+                    NonHeaderAdapter.selectedPosition = NonHeaderAdapter.selectedPosition + 1;
+                recyclerView.scrollToPosition(NonHeaderAdapter.selectedPosition);
+                mAdapter.notifyDataSetChanged();
+                Log.d(TAG, "now position = " + NonHeaderAdapter.selectedPosition);
                 break;
 
             case R.id.button_click:
-                Log.d(TAG, "button_click position = " + MyAdapter.selectedPosition);
-                recyclerView.findViewHolderForAdapterPosition(MyAdapter.selectedPosition).itemView.performClick();
+                Log.d(TAG, "button_click position = " + NonHeaderAdapter.selectedPosition);
+                recyclerView.findViewHolderForAdapterPosition(NonHeaderAdapter.selectedPosition).itemView.performClick();
+                Log.d(TAG, "now position = " + NonHeaderAdapter.selectedPosition);
+                break;
+
+            case R.id.button_header:
+                Log.d(TAG, "button_header position");
+                Intent i = new Intent(NonHeaderActivity.this, HeaderActivity.class);
+                this.startActivity(i);
+                finish();
                 break;
         }
-        recyclerView.scrollToPosition(MyAdapter.selectedPosition);
-        mAdapter.notifyDataSetChanged();
-        Log.d(TAG, "now position = " + MyAdapter.selectedPosition);
-    }
 
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        Log.d(TAG, "onTouch");
-        return false;
     }
 
 }
